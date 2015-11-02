@@ -6,155 +6,98 @@
 
 $(function() {
     
-    var fileFL;  
+  var fileFL;  
     
-var xhr= new XMLHttpRequest();
-xhr.open('GET', 'x.html', true);
-xhr.onreadystatechange= function() {
+  var xhr= new XMLHttpRequest();
+  xhr.open('GET', 'x.html', true);
+  xhr.onreadystatechange= function() {
     if (this.readyState!==4) return;
     if (this.status!==200) return; // or whatever error handling you want
     //document.getElementById('y').innerHTML= this.responseText;
     var str=this.responseText;
     fileFL = str.split("\n");
-};
-xhr.send();
+  };
+  xhr.send();
     
     
     
-    var c=document.getElementById("Console");
+  var c=document.getElementById("Console");
 	var Console=c.getContext("2d");
-    c.width = document.body.clientWidth; //document.width is obsolete
-    c.height = document.body.clientHeight; //document.height is obsolete
+  c.width = document.body.clientWidth;
+  c.height = document.body.clientHeight;
 	var CANVAS_WIDTH = c.width;
-	//var CANVAS_WIDTH = 800;
 	var CANVAS_HEIGHT = c.height;
-	//var CANVAS_HEIGHT = 600;
-    var FPS = 5;
+  var FPS = 5;
 
-    //var imgBg = new Image();
-    //imgBg.src = "Background.png";
-    Console.fillStyle="#FFFFFF";
-    Console.font="10px Lucida Console";
-    //---------------------------The Backbone ------------------
-    setInterval(function() {
-        draw();
-    }, 1000/FPS); 
+  Console.fillStyle="#6E6E6E";
+  //Console.fillStyle="#FFFFFF";
+  Console.font="14px Orbitron";
+  //---------------------------The Backbone ------------------
+  setInterval(function() {
+    draw();
+  }, 1000/FPS); 
 
-    function draw() {
-            Console.clearRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
-            //Console.fillText(getMessage(),10,50);
-            lines = lines.filter(function(line) {
-                    return line.active;
-                });
-        lines.forEach(function(line) {
-				line.update();
-				line.draw();
-			});
-        lines.push(line());
-          // console.log(lines.length);
-        }
-
-
-    //----------------------------initialize the game basics----------------
-    function init(){
-        //document.getElementById('Console').style.height= CANVAS_HEIGHT;
-        //document.getElementById('Console').style.width= CANVAS_WIDTH;
-        lines.push(line());
+  function draw() {
+    Console.clearRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
+    //Console.fillText(getMessage(),10,50);
+    lines = lines.filter(function(line) {
+      return line.active;
+    });
+    lines.forEach(function(line) {
+      line.update();
+		  line.draw();
+		});
+    lines.push(line());
+    //console.log(lines.length);
     }
+  
+  //----------------------------initialize the game basics----------------
+  function init(){
+      lines.push(line());
+  }
 
-//---------------------Generate random number(range as parameter)-------
-	function randomNumber(range) {
-		return Math.floor((Math.random()*range)+1);
-	}
-    function randomNumberBetween(from, to) {
+  //---------------------Generate random number(range as parameter)-------
+  function randomNumber(range) {
+    return Math.floor((Math.random()*range)+1);
+  }
+  
+  function randomNumberBetween(from, to) {
 		return Math.floor((Math.random()*to)+from);
 	}
 
-//-------------------------draws a black deep space bkg at layer 1------
-	 var background = {
-     width: 400,
-     height: 550,
-	 x: 0,
-     y: 0,  /// to come from top.
-     draw: function () {
-         Game.drawImage(imgBg, this.x, this.y, this.width, this.height, 0, 0, this.width, this.height);
-     },
- };
-/* 
-img		Specifies the image, canvas, or video element to use	 
-sx		Optional. The x coordinate where to start clipping	
-sy		Optional. The y coordinate where to start clipping	
-swidth	Optional. The width of the clipped image	
-sheight	Optional. The height of the clipped image	
-x		The x coordinate where to place the image on the canvas	
-y		The y coordinate where to place the image on the canvas	
-width	Optional. The width of the image to use 
-			(stretch or reduce the image)	
-height	Optional. The height of the image to use 
-			(stretch or reduce the image)   */
+  function getMessage() {
+    return fileFL[Math.floor(Math.random() * fileFL.length)];
+  }
 
+  var lines = [];//an array that will hold the bullets
+  function line(I) {
+		I = I || {};
+		I.id = 2;
+    I.x=5;
+    I.y = CANVAS_HEIGHT+2;
+    I.yVelocity=12;
+    I.active = true;
+    I.message = getMessage();
+    I.inBounds = function() {
+      return I.y >= 25 ;
+    };
     
+    I.draw = function() {
+      Console.fillText(I.message,I.x,I.y);
+    };
+      
+    I.update = function() {
+      I.y=I.y-I.yVelocity;
+      I.active = I.active && I.inBounds();
+    };
     
+    I.remove = function() {
+      this.active = false;
+    };
     
-    var messages = ["ping google.com",
-"git config -m global user.name dpi",
-"git config global user.name dpi",
-"git config --global user.name dpi",
-"git config --global user.email khairulhasanmd@gmail.com",
-"git config --global core.editor editor",
-"git config --list",
-"git init",
-"echo 'test'>readme.txt",
-"ls",
-"echo test>readme.txt",
-"ls",
-"git add readme.txt",
-"cat readme.txt",
-"git ststus",
-"git status",
-"git commit -m Initialize the repo",
-"git status",
-"git clone https://github.com/Traumflug/Teacup_Firmware.git",
-"git ststus",
-"git status",
-"git pull 107.109.6.198 master",
-"git status",
-"ls",
-"git add readme.txt",
-"git status",
-"echo sssssss >> readme.txt"];
-    function getMessage() {
-        return fileFL[Math.floor(Math.random() * fileFL.length)];
-    }
+    return I;
+  }
 
-    var lines = [];//an array that will hold the bullets
-    function line(I) {
-		  I = I || {};
-		  I.id = 2;
-          I.x=5;
-		  I.y = CANVAS_HEIGHT+2;
-          I.yVelocity=12;
-          I.active = true;
-          I.message = getMessage();
-          I.inBounds = function() {
-            return I.y >= 25 ;
-          };
-        
-          I.draw = function() {
-                Console.fillText(I.message,I.x,I.y);
-          };
-          
-          I.update = function() {
-            I.y=I.y-I.yVelocity;
-            I.active = I.active && I.inBounds();
-          };
-        
-          I.explode = function() {
-            this.active = false;
-          };
-        
-          return I;
-        }
 init();
 });
 
