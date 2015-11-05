@@ -29,6 +29,11 @@ $(function() {
 	var CANVAS_HEIGHT = c.height;
   var FPS = 5;
 
+  var BgTop = new Image();
+  BgTop.src = 'BgTop.png';
+  var BgBottom = new Image();
+  BgBottom.src = 'BgBottom.png';
+
   Console.fillStyle="#6E6E6E";
   //Console.fillStyle="#FFFFFF";
   Console.font="14px Orbitron";
@@ -48,12 +53,21 @@ $(function() {
 		  line.draw();
 		});
     lines.push(line());
-    //console.log(lines.length);
+    HeaderFooter.draw();
+    //console.log(fileFL.length);
     }
   
   //----------------------------initialize the game basics----------------
   function init(){
+      //var tp =  (CANVAS_HEIGHT-325);
+      //document.getElementById('footerbg').style.top = tp+'px';
+      //console.log(document.getElementById('footerbg').style.top);
+      //console.log('bla bla');
+
       lines.push(line());
+      //document.getElementById('headerbg').style.height = '325px';
+      //document.getElementById('footerbg').style.height = '325px';
+      
   }
 
   //---------------------Generate random number(range as parameter)-------
@@ -66,8 +80,24 @@ $(function() {
 	}
 
   function getMessage() {
-    return fileFL[Math.floor(Math.random() * fileFL.length)];
+    return fileFL[randomNumber(fileFL.length)];
+    console.log(fileFL);
   }
+
+  var HeaderFooter = {
+      positionX: 0,
+      width: 325,
+      height: 325,
+      draw: function() {
+        while (this.positionX<CANVAS_WIDTH)
+        {
+          Console.drawImage(BgTop, 0, 0, this.width, this.height, this.positionX, 0, this.width, this.height);
+          Console.drawImage(BgBottom, 0, 0, this.width, this.height, this.positionX, (CANVAS_HEIGHT-this.height), this.width, this.height);
+          this.positionX = this.positionX + this.width;
+        }
+        this.positionX=0;
+      }
+    };
 
   var lines = [];//an array that will hold the bullets
   function line(I) {
@@ -75,7 +105,7 @@ $(function() {
 		I.id = 2;
     I.x=5;
     I.y = CANVAS_HEIGHT+2;
-    I.yVelocity=12;
+    I.yVelocity = 12;
     I.active = true;
     I.message = getMessage();
     I.inBounds = function() {
@@ -94,11 +124,11 @@ $(function() {
     I.remove = function() {
       this.active = false;
     };
-    
     return I;
   }
 
-init();
+  init();
+
 });
 
 
@@ -107,100 +137,9 @@ init();
 
 <body bgcolor="#000000"> 
 <canvas id="Console"></canvas>
-<div id="content">
-  This si test content
-  This si test content
-  This si test content
-  This si test content
-  This si test content
-  This si test content
-  This si test content
-   This si test content
-  This si test content
-  This si test content
-  This si test content
-  This si test content
-  This si test content
-  This si test content This si test content
-  This si test content
-  This si test content
-  This si test content
-  This si test content
-  This si test content
-  This si test content This si test content
-  This si test content
-  This si test content
-  This si test content
-  This si test content
-  This si test content
-  This si test content This si test content
-  This si test content
-  This si test content
-  This si test content
-  This si test content
-  This si test content
-  This si test content This si test content
-  This si test content
-  This si test content
-  This si test content
-  This si test content
-  This si test content
-  This si test content This si test content
-  This si test content
-  This si test content
-  This si test content
-  This si test content
-  This si test content
-  This si test content This si test content
-  This si test content
-  This si test content
-  This si test content
-  This si test content
-  This si test content
-  This si test content This si test content
-  This si test content
-  This si test content
-  This si test content
-  This si test content
-  This si test content
-  This si test content This si test content
-  This si test content
-  This si test content
-  This si test content
-  This si test content
-  This si test content
-  This si test content This si test content
-  This si test content
-  This si test content
-  This si test content
-  This si test content
-  This si test content
-  This si test content This si test content
-  This si test content
-  This si test content
-  This si test content
-  This si test content
-  This si test content
-  This si test content This si test content
-  This si test content
-  This si test content
-  This si test content
-  This si test content
-  This si test content
-  This si test content This si test content
-  This si test content
-  This si test content
-  This si test content
-  This si test content
-  This si test content
-  This si test content This si test content
-  This si test content
-  This si test content
-  This si test content
-  This si test content
-  This si test content
-  This si test content
 
-</div>
+</div><!-- #demo_top_wrapper
+<div id="headerbg"></div>
+<div id="footerbg"></div> -->
 </body>
 </html>
