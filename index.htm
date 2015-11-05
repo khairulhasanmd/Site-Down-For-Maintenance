@@ -86,13 +86,14 @@ $(function() {
 
   var HeaderFooter = {
       positionX: 0,
+      offset: 85,
       width: 325,
       height: 325,
       draw: function() {
         while (this.positionX<CANVAS_WIDTH)
         {
-          Console.drawImage(BgTop, 0, 0, this.width, this.height, this.positionX, 0, this.width, this.height);
-          Console.drawImage(BgBottom, 0, 0, this.width, this.height, this.positionX, (CANVAS_HEIGHT-this.height), this.width, this.height);
+          Console.drawImage(BgTop, 0, 0, this.width, this.height, this.positionX, -(this.offset), this.width, this.height);
+          Console.drawImage(BgBottom, 0, 0, this.width, this.height, this.positionX, ((CANVAS_HEIGHT+this.offset)-this.height), this.width, this.height);
           this.positionX = this.positionX + this.width;
         }
         this.positionX=0;
