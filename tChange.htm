@@ -1,0 +1,65 @@
+<html>
+<head>
+<script type='text/javascript' src="jquery.min.js" type="text/javascript"></script>
+<script type='text/javascript'>
+
+$(function() {
+    
+  var FPS = 1;
+
+
+  //---------------------------The Backbone ------------------
+  setInterval(function() {
+    draw();
+  }, 1000/FPS); 
+
+  function draw() {
+    changeMsg();
+    }
+  
+  //----------------------------initialize the game basics----------------
+  function init(){
+
+      
+  }
+
+
+  function changeMsg () {
+    document.getElementById("message").innerHTML = getMessage()
+  }
+
+var message = ["Make", 
+              "Build",
+              "Invent",
+              "Prepare",
+              "Raise",
+              "Construct",
+              "Breake"];
+  //---------------------Generate random number(range as parameter)-------
+  function randomNumber(range) {
+    return Math.floor((Math.random()*range)+1);
+  }
+  
+  function randomNumberBetween(from, to) {
+		return Math.floor((Math.random()*to)+from);
+	}
+
+  function getMessage() {
+    return 'We ' + message[randomNumber(6)];
+  }
+
+ 
+  init();
+
+});
+
+
+</script>
+</head>
+
+<body> 
+
+<div id="message">We Make</div>
+
+</body>
+</html>
